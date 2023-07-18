@@ -58,3 +58,41 @@ b = torch.arange(2).reshape(1, 2)
 print('a:', a)
 print('b:', b)
 print('a + b:', a + b)  # 广播运算
+
+X = torch.arange(12, dtype=torch.float32).reshape(3, 4)
+print("X:", X)
+print("X[-1]:", X[-1])
+print("X[1:3]:", X[1:3])
+
+X[1, 2] = 9  # 写入元素。
+print('X:', X)
+
+X[0:2, :] = 12  # 写入元素。
+print('X:', X)
+
+
+# 节约内存
+before = id(Y)  # id()函数提供了内存中引用对象的确切地址
+Y = Y + X
+print(id(Y) == before)
+
+before = id(X)
+X += Y
+print(id(X) == before)  # 使用 X[:] = X + Y 或 X += Y 来减少操作的内存开销。
+
+before = id(X)
+X[:] = X + Y
+print(id(X) == before)  # 使用 X[:] = X + Y 或 X += Y 来减少操作的内存开销。
+
+
+# tensor对象转换为其他 Python对象
+Y = torch.tensor([[2.0, 1, 4, 3], [1, 2, 3, 4], [4, 3, 2, 1]])
+A = Y.numpy()  # 转换函数
+print(type(A))  # 打印A的类型
+print(A)
+B = torch.tensor(A)
+print(type(B))  # 打印B的类型
+print(B)
+
+a = torch.tensor([3.5])
+print(a, a.item(), float(a), int(a))
